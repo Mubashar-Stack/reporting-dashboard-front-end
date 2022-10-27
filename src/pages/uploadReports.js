@@ -126,6 +126,8 @@ export default function UploadReports() {
   const [issuccess, setIsSuccess] = useState(false);
   const [message, setMessage] = useState('');
   const [allFilesList, setAllFilesList] = useState([]);
+  const [commission, setCommission] = useState(20);
+
 
   const handleIsSuccessOpen = () => setIsSuccess(true);
   const handleIsSuccessClose = () => setIsSuccess(false);
@@ -212,7 +214,7 @@ export default function UploadReports() {
     const data = new FormData();
     data.append('date', new Date(fromdate));
     data.append('report', files[0]);
-    data.append('commission', '20');
+    data.append('commission', commission);
     const config = {
       method: 'post',
       url: 'http://18.134.209.82/api/reports/new',
@@ -303,9 +305,9 @@ export default function UploadReports() {
                 </InputLabel>
                 <Input
                   id="standard-adornment-amount"
-                  value={20}
+                  value={commission}
                   disabled
-                  onChange={handleChange('Commission')}
+                  onChange={setCommission}
                   startAdornment={<InputAdornment position="start">%</InputAdornment>}
                   style={{ marginBottom: 10 }}
                 />
