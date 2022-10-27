@@ -306,7 +306,6 @@ export default function UploadReports() {
                 <Input
                   id="standard-adornment-amount"
                   value={commission}
-                  disabled
                   onChange={setCommission}
                   startAdornment={<InputAdornment position="start">%</InputAdornment>}
                   style={{ marginBottom: 10 }}
