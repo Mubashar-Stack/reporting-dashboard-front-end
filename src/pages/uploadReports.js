@@ -306,7 +306,14 @@ export default function UploadReports() {
                 <Input
                   id="standard-adornment-amount"
                   value={commission}
-                  onChange={setCommission}
+                  onChange={(e)=>{
+                    setCommission(e.target.value)
+                  }}
+                  onBlur={(e)=>{
+                    if(commission >100 || commission<1){
+                      alert("Please enter value between 1 and 100")
+                    }
+                  }}
                   startAdornment={<InputAdornment position="start">%</InputAdornment>}
                   style={{ marginBottom: 10 }}
                 />
