@@ -19,7 +19,7 @@ export default function DashboardApp() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'https://reporting-dashboard-back-end.herokuapp.com/homeStatsFixed',
+      url: 'http://18.134.209.82/api/homeStatsFixed',
       headers: {},
     };
     axios(config)

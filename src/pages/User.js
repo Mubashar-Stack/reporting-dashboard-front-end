@@ -96,7 +96,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'https://reporting-dashboard-back-end.herokuapp.com/users',
+      url: 'http://18.134.209.82/api/users',
       headers: {},
     };
     axios(config)
@@ -239,7 +239,7 @@ export default function User() {
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={`https://reporting-dashboard-back-end.herokuapp.com/${photo}`} />
+                            <Avatar alt={name} src={`http://18.134.209.82/api/${photo}`} />
                             <Typography variant="subtitle2" noWrap>
                               {`${first_name} ${last_name}`}
                             </Typography>

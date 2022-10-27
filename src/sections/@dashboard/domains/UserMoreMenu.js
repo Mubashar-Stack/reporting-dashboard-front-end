@@ -35,7 +35,7 @@ export default function UserMoreMenu({ row }) {
   const handleDelete = () => {
     var config = {
       method: 'delete',
-      url: `https://reporting-dashboard-back-end.herokuapp.com/domain/delete/${row.id}`,
+      url: `http://18.134.209.82/api/domain/delete/${row.id}`,
       headers: {},
     };
     axios(config)
@@ -83,7 +83,7 @@ export default function UserMoreMenu({ row }) {
             <Iconify
               icon="eva:download-fill"
               onClick={() => {
-                const link = `https://reporting-dashboard-back-end.herokuapp.com/${row.ads_code}`;
+                const link = `http://18.134.209.82/api/${row.ads_code}`;
                 window.open(link);
               }}
               width={24}
@@ -93,7 +93,7 @@ export default function UserMoreMenu({ row }) {
           <ListItemText
             primary="Download"
             onClick={() => {
-              const link = `https://reporting-dashboard-back-end.herokuapp.com/${row.ads_code}`;
+              const link = `http://18.134.209.82/api/${row.ads_code}`;
               window.open(link);
             }}
             primaryTypographyProps={{ variant: 'body2' }}

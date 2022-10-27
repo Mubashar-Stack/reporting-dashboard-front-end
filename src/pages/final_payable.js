@@ -134,7 +134,7 @@ export default function UploadReports() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'https://reporting-dashboard-back-end.herokuapp.com/final_payable/all',
+      url: 'http://18.134.209.82/api/final_payable/all',
       headers: {},
     };
     axios(config)
@@ -207,7 +207,7 @@ export default function UploadReports() {
     data.append('final_payable', files[0]);
     const config = {
       method: 'post',
-      url: 'https://reporting-dashboard-back-end.herokuapp.com/final-payable/new',
+      url: 'http://18.134.209.82/api/final-payable/new',
       // headers: { 'content-type': 'multipart/form-data' },
       data: data,
     };

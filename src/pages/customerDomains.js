@@ -97,7 +97,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `https://reporting-dashboard-back-end.herokuapp.com/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
+      url: `http://18.134.209.82/api/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
       headers: {},
     };
     axios(config)
@@ -205,7 +205,7 @@ export default function User() {
                         <TableCell padding="checkbox"></TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={first_name} src={`https://reporting-dashboard-back-end.herokuapp.com/${photo}`} />
+                            <Avatar alt={first_name} src={`http://18.134.209.82/api/${photo}`} />
                             <Typography variant="subtitle2" noWrap>
                               {`${first_name} ${last_name}`}
                             </Typography>
@@ -219,7 +219,7 @@ export default function User() {
                             <Iconify
                               icon="eva:download-fill"
                               onClick={() => {
-                                const link = `https://reporting-dashboard-back-end.herokuapp.com/${ads_code}`;
+                                const link = `http://18.134.209.82/api/${ads_code}`;
                                 window.open(link);
                               }}
                               width={34}
@@ -228,7 +228,7 @@ export default function User() {
                             <ListItemText
                               primary="Download"
                               onClick={() => {
-                                const link = `https://reporting-dashboard-back-end.herokuapp.com/${ads_code}`;
+                                const link = `http://18.134.209.82/api/${ads_code}`;
                                 window.open(link);
                               }}
                               primaryTypographyProps={{ variant: 'body2' }}

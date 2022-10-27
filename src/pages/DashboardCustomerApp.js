@@ -18,7 +18,7 @@ export default function DashboardApp() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'https://reporting-dashboard-back-end.herokuapp.com/userHomeStatsFixed',
+      url: 'http://18.134.209.82/api/userHomeStatsFixed',
       headers: { 
         'Authorization': `Bearer ${window.localStorage.getItem('token')}`
       }

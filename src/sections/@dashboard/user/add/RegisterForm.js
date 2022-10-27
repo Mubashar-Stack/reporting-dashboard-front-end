@@ -54,13 +54,13 @@ export default function HorizontalLabelPositionBelowStepper(props) {
     if (isEdit || isView) {
       let config = {
         method: 'get',
-        url: `https://reporting-dashboard-back-end.herokuapp.com/users/${data?.id}`,
+        url: `http://18.134.209.82/api/users/${data?.id}`,
         headers: {},
       };
       axios(config)
         .then(function (response) {
           const User = JSON.parse(JSON.stringify(response.data.data));
-          setURL(`https://reporting-dashboard-back-end.herokuapp.com/${User?.photo}`);
+          setURL(`http://18.134.209.82/api/${User?.photo}`);
           setAvatar(User?.photo);
           setFirstName(User?.first_name);
           setLastName(User?.last_name);
@@ -104,7 +104,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
         var config = {
           method: 'put',
-          url: `https://reporting-dashboard-back-end.herokuapp.com/user/update/${data?.id}`,
+          url: `http://18.134.209.82/api/user/update/${data?.id}`,
           headers: {},
           data: newData,
         };
@@ -147,7 +147,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
           var config = {
             method: 'post',
-            url: 'https://reporting-dashboard-back-end.herokuapp.com/user/add',
+            url: 'http://18.134.209.82/api/user/add',
             headers: {},
             data: newData,
           };

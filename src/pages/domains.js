@@ -95,7 +95,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'https://reporting-dashboard-back-end.herokuapp.com/domains',
+      url: 'http://18.134.209.82/api/domains',
       headers: {},
     };
     axios(config)

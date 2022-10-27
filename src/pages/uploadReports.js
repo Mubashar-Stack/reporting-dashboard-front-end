@@ -136,7 +136,7 @@ export default function UploadReports() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'https://reporting-dashboard-back-end.herokuapp.com/reports/all',
+      url: 'http://18.134.209.82/api/reports/all',
       headers: {},
     };
     axios(config)
@@ -215,7 +215,7 @@ export default function UploadReports() {
     data.append('commission', '20');
     const config = {
       method: 'post',
-      url: 'https://reporting-dashboard-back-end.herokuapp.com/reports/new',
+      url: 'http://18.134.209.82/api/reports/new',
       // headers: { 'content-type': 'multipart/form-data' },
       data: data,
     };
