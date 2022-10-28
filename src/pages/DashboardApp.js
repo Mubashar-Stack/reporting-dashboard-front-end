@@ -126,7 +126,7 @@ export default function DashboardApp() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/homeStatsFixed',
+      url: 'http://localhost:5000/homeStatsFixed',
       headers: {},
     };
     axios(config)
@@ -141,7 +141,7 @@ export default function DashboardApp() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/homeStats?domain_name=${domainSelected}&start_date=${
+      url: `http://localhost:5000/homeStats?domain_name=${domainSelected}&start_date=${
         new Date(fromdate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]
       }&end_date=${new Date(todate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]}`,
       headers: {},
@@ -160,7 +160,7 @@ export default function DashboardApp() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/domains',
+      url: 'http://localhost:5000/domains',
       headers: {},
     };
     axios(config)
@@ -243,8 +243,8 @@ export default function DashboardApp() {
           <Typography variant="h6" gutterBottom>
             Today Stats
           </Typography>
-          <Grid container spacing={2} justifyContent="space-between">
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+          <Grid container spacing={2} justifyContent="space-evenly">
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Requests"
                 total={homeStatsFixed?.todayStats?.Ad_Requests}
@@ -252,7 +252,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Impressions"
                 total={homeStatsFixed?.todayStats?.Ad_Impressions}
@@ -261,7 +261,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Revenue"
                 total={homeStatsFixed?.todayStats?.revenue}
@@ -270,7 +270,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Requests"
                 total={homeStatsFixed?.todayStats?.Calculated_Ad_Requests}
@@ -278,7 +278,7 @@ export default function DashboardApp() {
                 icon={'ant-design:rise-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Impressions"
                 total={homeStatsFixed?.todayStats?.Calculated_Ad_Impressions}
@@ -286,7 +286,7 @@ export default function DashboardApp() {
                 icon={'ant-design:line-chart-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Revenue"
                 total={homeStatsFixed?.todayStats?.calculatedRevenue}
@@ -294,7 +294,7 @@ export default function DashboardApp() {
                 icon={'ant-design:dollar-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="eCPM"
                 total={
@@ -310,8 +310,8 @@ export default function DashboardApp() {
           <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
             Yesterday Stats
           </Typography>
-          <Grid container spacing={2} justifyContent="space-between">
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+          <Grid container spacing={2} justifyContent="space-evenly">
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Requests"
                 total={homeStatsFixed?.yesterdayStats?.Ad_Requests}
@@ -320,7 +320,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Impressions"
                 total={homeStatsFixed?.yesterdayStats?.Ad_Impressions}
@@ -329,7 +329,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Revenue"
                 total={homeStatsFixed?.yesterdayStats?.revenue}
@@ -338,7 +338,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Requests"
                 total={homeStatsFixed?.yesterdayStats?.Calculated_Ad_Requests}
@@ -346,7 +346,7 @@ export default function DashboardApp() {
                 icon={'ant-design:rise-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Impressions"
                 total={homeStatsFixed?.yesterdayStats?.Calculated_Ad_Impressions}
@@ -354,7 +354,7 @@ export default function DashboardApp() {
                 icon={'ant-design:line-chart-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Revenue"
                 total={homeStatsFixed?.yesterdayStats?.calculatedRevenue}
@@ -362,7 +362,7 @@ export default function DashboardApp() {
                 icon={'ant-design:dollar-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="eCPM"
                 total={
@@ -378,8 +378,8 @@ export default function DashboardApp() {
           <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
             Current Week Stats
           </Typography>
-          <Grid container spacing={2} justifyContent="space-between">
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+          <Grid container spacing={2} justifyContent="space-evenly">
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Requests"
                 total={homeStatsFixed?.thisWeekStats?.Ad_Requests}
@@ -388,7 +388,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Impressions"
                 total={homeStatsFixed?.thisWeekStats?.Ad_Impressions}
@@ -397,7 +397,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Revenue"
                 total={homeStatsFixed?.thisWeekStats?.revenue}
@@ -406,7 +406,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Requests"
                 total={homeStatsFixed?.thisWeekStats?.Calculated_Ad_Requests}
@@ -414,7 +414,7 @@ export default function DashboardApp() {
                 icon={'ant-design:rise-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Impressions"
                 total={homeStatsFixed?.thisWeekStats?.Calculated_Ad_Impressions}
@@ -422,7 +422,7 @@ export default function DashboardApp() {
                 icon={'ant-design:line-chart-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Revenue"
                 total={homeStatsFixed?.thisWeekStats?.calculatedRevenue}
@@ -430,7 +430,7 @@ export default function DashboardApp() {
                 icon={'ant-design:dollar-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="eCPM"
                 total={
@@ -446,8 +446,8 @@ export default function DashboardApp() {
           <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
             Last Week Stats
           </Typography>
-          <Grid container spacing={2} justifyContent="space-between">
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+          <Grid container spacing={2} justifyContent="space-evenly">
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Requests"
                 total={homeStatsFixed?.lastWeekStats?.Ad_Requests}
@@ -456,7 +456,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Impressions"
                 total={homeStatsFixed?.lastWeekStats?.Ad_Impressions}
@@ -465,7 +465,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Revenue"
                 total={homeStatsFixed?.lastWeekStats?.revenue}
@@ -474,7 +474,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Requests"
                 total={homeStatsFixed?.lastWeekStats?.Calculated_Ad_Requests}
@@ -482,7 +482,7 @@ export default function DashboardApp() {
                 icon={'ant-design:rise-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Impressions"
                 total={homeStatsFixed?.lastWeekStats?.Calculated_Ad_Impressions}
@@ -490,7 +490,7 @@ export default function DashboardApp() {
                 icon={'ant-design:line-chart-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Revenue"
                 total={homeStatsFixed?.lastWeekStats?.calculatedRevenue}
@@ -498,7 +498,7 @@ export default function DashboardApp() {
                 icon={'ant-design:dollar-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="eCPM"
                 total={
@@ -514,8 +514,8 @@ export default function DashboardApp() {
           <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
             Current Month Stats
           </Typography>
-          <Grid container spacing={2} justifyContent="space-between">
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+          <Grid container spacing={2} justifyContent="space-evenly">
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Requests"
                 total={homeStatsFixed?.currentMonthStats?.Ad_Requests}
@@ -524,7 +524,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Impressions"
                 total={homeStatsFixed?.currentMonthStats?.Ad_Impressions}
@@ -533,7 +533,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Revenue"
                 total={homeStatsFixed?.currentMonthStats?.revenue}
@@ -542,7 +542,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Requests"
                 total={homeStatsFixed?.currentMonthStats?.Calculated_Ad_Requests}
@@ -550,7 +550,7 @@ export default function DashboardApp() {
                 icon={'ant-design:rise-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Impressions"
                 total={homeStatsFixed?.currentMonthStats?.Calculated_Ad_Impressions}
@@ -558,7 +558,7 @@ export default function DashboardApp() {
                 icon={'ant-design:line-chart-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Revenue"
                 total={homeStatsFixed?.currentMonthStats?.calculatedRevenue}
@@ -566,7 +566,7 @@ export default function DashboardApp() {
                 icon={'ant-design:dollar-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="eCPM"
                 total={
@@ -582,8 +582,8 @@ export default function DashboardApp() {
           <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
             Last Month Stats
           </Typography>
-          <Grid container spacing={2} justifyContent="space-between">
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+          <Grid container spacing={2} justifyContent="space-evenly">
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Requests"
                 total={homeStatsFixed?.lastMonthStats?.Ad_Requests}
@@ -592,7 +592,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Impressions"
                 total={homeStatsFixed?.lastMonthStats?.Ad_Impressions}
@@ -601,7 +601,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Revenue"
                 total={homeStatsFixed?.lastMonthStats?.revenue}
@@ -610,7 +610,7 @@ export default function DashboardApp() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Requests"
                 total={homeStatsFixed?.lastMonthStats?.Calculated_Ad_Requests}
@@ -618,7 +618,7 @@ export default function DashboardApp() {
                 icon={'ant-design:rise-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Impressions"
                 total={homeStatsFixed?.lastMonthStats?.Calculated_Ad_Impressions}
@@ -626,7 +626,7 @@ export default function DashboardApp() {
                 icon={'ant-design:line-chart-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Revenue"
                 total={homeStatsFixed?.lastMonthStats?.calculatedRevenue}
@@ -634,7 +634,7 @@ export default function DashboardApp() {
                 icon={'ant-design:dollar-outlined'}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={1.7}>
+            <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="eCPM"
                 total={
