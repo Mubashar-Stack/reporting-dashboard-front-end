@@ -96,7 +96,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/users',
+      url: 'http://localhost:5000/users',
       headers: {},
     };
     axios(config)
@@ -161,14 +161,14 @@ export default function User() {
   const isUserNotFound = filteredUsers.length === 0;
   const style = {
     position: 'absolute',
-    top: '40%',
-    left: '40%',
-    transform: 'translate(-40%, -40%)',
-    // width: 500,
+    top: '10%',
+    left: '50%',
+    transform: 'translate(-50%, -10%)',
+    // // width: 500,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 10,
+    p: 5,
   };
 
   return (
@@ -193,15 +193,15 @@ export default function User() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            {/* <Box sx={{ ...style, width: '50%',}}>
-              <Typography variant="h4" gutterBottom>
+            <Box sx={{ ...style, width: '60%',height: '97%'}}>
+              {/* <Typography variant="h4" gutterBottom>
                 Add New User
               </Typography>
 
               <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography> */}
 
               <RegisterForm />
-            {/* </Box> */}
+            </Box>
           </Modal>
         </Stack>
 
@@ -239,7 +239,7 @@ export default function User() {
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={`http://18.134.209.82/api/${photo}`} />
+                            <Avatar alt={name} src={`http://localhost:5000/${photo}`} />
                             <Typography variant="subtitle2" noWrap>
                               {`${first_name} ${last_name}`}
                             </Typography>
@@ -249,7 +249,7 @@ export default function User() {
                         {/* <TableCell align="left">{role}</TableCell> */}
                         <TableCell align="left">{enabled ? 'Yes' : 'No'}</TableCell>
                         <TableCell align="left">
-                        {new Date(create_at).toString()}
+                        {new Date(create_at).toLocaleString()}
                         </TableCell>
 
                         <TableCell align="right">

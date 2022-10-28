@@ -134,7 +134,7 @@ export default function UploadReports() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/final_payable/all',
+      url: 'http://localhost:5000/final_payable/all',
       headers: {},
     };
     axios(config)
@@ -207,7 +207,7 @@ export default function UploadReports() {
     data.append('final_payable', files[0]);
     const config = {
       method: 'post',
-      url: 'http://18.134.209.82/api/final-payable/new',
+      url: 'http://localhost:5000/final-payable/new',
       // headers: { 'content-type': 'multipart/form-data' },
       data: data,
     };
@@ -361,7 +361,7 @@ export default function UploadReports() {
                           </Label>
                         </TableCell> */}
                         <TableCell colSpan={2} align="left">
-                          {new Date(create_at).toUTCString()}
+                          {new Date(create_at).toLocaleString()}
                         </TableCell>
 
                         <TableCell align="right">

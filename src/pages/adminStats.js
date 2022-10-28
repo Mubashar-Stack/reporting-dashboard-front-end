@@ -126,7 +126,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/homeStats?domain_name=${domainSelected}&start_date=${
+      url: `http://localhost:5000/homeStats?domain_name=${domainSelected}&start_date=${
         new Date(fromdate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]
       }&end_date=${new Date(todate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]}`,
       headers: {},
@@ -145,7 +145,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/domains',
+      url: 'http://localhost:5000/domains',
       headers: {},
     };
     axios(config)

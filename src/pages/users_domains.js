@@ -95,7 +95,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/users_domains',
+      url: 'http://localhost:5000/users_domains',
       headers: {},
     };
     axios(config)
@@ -238,7 +238,7 @@ export default function User() {
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={first_name} src={`http://18.134.209.82/api/${photo}`} />
+                            <Avatar alt={first_name} src={`http://localhost:5000/${photo}`} />
                             <Typography variant="subtitle2" noWrap>
                               {`${first_name} ${last_name}`}
                             </Typography>
@@ -246,7 +246,7 @@ export default function User() {
                         </TableCell>
                         <TableCell align="left">{domainname}</TableCell>
                         <TableCell align="left">
-                        {new Date(created_at).toString()}
+                        {new Date(created_at).toLocaleString()}
                         </TableCell>
 
                         <TableCell align="right">

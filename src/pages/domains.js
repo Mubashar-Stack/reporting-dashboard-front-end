@@ -95,7 +95,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/domains',
+      url: 'http://localhost:5000/domains',
       headers: {},
     };
     axios(config)
@@ -245,7 +245,7 @@ export default function User() {
                         </TableCell>
                         <TableCell align="left">{ads_code?.split('_')[1]}</TableCell>
                         <TableCell align="left">
-                        {new Date(created_at).toString()}
+                        {new Date(created_at).toLocaleString()}
                         </TableCell>
 
                         <TableCell align="right">

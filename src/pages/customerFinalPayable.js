@@ -122,7 +122,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/user-monthly-payable?domain_name=${domainSelected}&month=${
+      url: `http://localhost:5000/user-monthly-payable?domain_name=${domainSelected}&month=${
         new Date(fromdate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]
       }`,
       headers: {
@@ -143,7 +143,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
+      url: `http://localhost:5000/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
       headers: {},
     };
     axios(config)
@@ -319,7 +319,7 @@ export default function User() {
                         <TableCell align="left">{fShortenNumber(deductions)}</TableCell>
                         <TableCell align="left">{fShortenNumber(net_revenue)}</TableCell>
                         {/* <TableCell align="left">{fShortenNumber(Calculated_Revenue)}</TableCell> */}
-                        <TableCell align="left">{new Date(created_at).toString()}</TableCell>
+                        <TableCell align="left">{new Date(created_at).toLocaleString()}</TableCell>
                       </TableRow>
                     );
                   })}

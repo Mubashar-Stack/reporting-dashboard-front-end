@@ -1,9 +1,14 @@
+/* eslint-disable */
 import * as Yup from 'yup';
-import { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useState ,useEffect} from 'react';
+
 
 // form
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
@@ -13,13 +18,23 @@ import { LoadingButton } from '@mui/lab';
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
 
+
 // ----------------------------------------------------------------------
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function LoginForm() {
   /* eslint-disable */
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState('');
+  const [issuccess, setIsSuccess] = useState(false);
+  const handleIsSuccessClose = () => setIsSuccess(false);
+  const handleIsSuccessOpen = () => setIsSuccess(true);
+
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -46,7 +61,7 @@ export default function LoginForm() {
     const data = JSON.stringify(values);
     const config = {
       method: 'post',
-      url: 'http://18.134.209.82/api/auth/login',
+      url: 'http://localhost:5000/auth/login',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -69,6 +84,8 @@ export default function LoginForm() {
       })
       .catch(function (error) {
         console.log(error);
+        setMessage('Invalid credentials!');
+        handleIsSuccessOpen()
       });
   };
 
@@ -103,6 +120,11 @@ export default function LoginForm() {
       <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
         Login
       </LoadingButton>
+      <Snackbar open={issuccess} autoHideDuration={6000} onClose={handleIsSuccessClose}>
+        <Alert onClose={handleIsSuccessClose} severity="error" sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </FormProvider>
   );
 }

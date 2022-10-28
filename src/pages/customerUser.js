@@ -70,7 +70,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/users',
+      url: 'http://localhost:5000/users',
       headers: {},
     };
     axios(config)

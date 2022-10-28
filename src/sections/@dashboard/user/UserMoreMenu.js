@@ -5,6 +5,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Menu, MenuItem, Container, Typography, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 // component
 import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
 import Iconify from '../../../components/Iconify';
@@ -35,7 +36,7 @@ export default function UserMoreMenu({ row }) {
   const handleDelete = () => {
     var config = {
       method: 'delete',
-      url: `http://18.134.209.82/api/user/delete/${row.id}`,
+      url: `http://localhost:5000/user/delete/${row.id}`,
       headers: {},
     };
     axios(config)
@@ -60,6 +61,18 @@ export default function UserMoreMenu({ row }) {
     setIsEdit(false);
     setIsView(false);
     setOpen(false);
+  };
+
+  const style = {
+    position: 'absolute',
+    top: '10%',
+    left: '50%',
+    transform: 'translate(-50%, -10%)',
+    // // width: 500,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 5,
   };
 
   return (
@@ -157,7 +170,15 @@ export default function UserMoreMenu({ row }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <RegisterForm isEdit={isEdit} isView={isView} data={row} />
+        <Box sx={{ ...style, width: '60%', height: '97%' }}>
+          {/* <Typography variant="h4" gutterBottom>
+                Add New User
+              </Typography>
+
+              <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography> */}
+
+          <RegisterForm isEdit={isEdit} isView={isView} data={row} />
+        </Box>
       </Modal>
     </>
   );

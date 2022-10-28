@@ -67,7 +67,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
-            <Avatar src={`http://18.134.209.82/api/${window.localStorage.getItem('photo')}`} alt="photoURL" />
+            <Avatar src={`http://localhost:5000/${window.localStorage.getItem('photo')}`} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
               { window.localStorage.getItem('first_name')} { window.localStorage.getItem('last_name')}

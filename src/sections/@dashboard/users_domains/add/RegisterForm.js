@@ -36,7 +36,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
   React.useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/users',
+      url: 'http://localhost:5000/users',
       headers: {},
     };
     axios(config)
@@ -49,7 +49,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
       });
     let configDomain = {
       method: 'get',
-      url: 'http://18.134.209.82/api/domains',
+      url: 'http://localhost:5000/domains',
       headers: {},
     };
     axios(configDomain)
@@ -63,7 +63,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
     if (isEdit || isView) {
       let config = {
         method: 'get',
-        url: `http://18.134.209.82/api/users_domains/${data?.id}`,
+        url: `http://localhost:5000/users_domains/${data?.id}`,
         headers: {},
       };
       axios(config)
@@ -90,7 +90,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
         var config = {
           method: 'put',
-          url: `http://18.134.209.82/api/user_domain/update/${data?.id}`,
+          url: `http://localhost:5000/user_domain/update/${data?.id}`,
           headers: {},
           data: newData,
         };
@@ -123,7 +123,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
         var config = {
           method: 'post',
-          url: 'http://18.134.209.82/api/user_domain/add',
+          url: 'http://localhost:5000/user_domain/add',
           headers: {},
           data: newData,
         };
@@ -216,8 +216,8 @@ export default function HorizontalLabelPositionBelowStepper(props) {
                       <img
                         loading="lazy"
                         width="20"
-                        src={`http://18.134.209.82/api/${option?.photo}`}
-                        srcSet={`http://18.134.209.82/api/${option?.photo}.png 2x`}
+                        src={`http://localhost:5000/${option?.photo}`}
+                        srcSet={`http://localhost:5000/${option?.photo}.png 2x`}
                         alt=""
                       />
                       {option.first_name} {option.last_name}

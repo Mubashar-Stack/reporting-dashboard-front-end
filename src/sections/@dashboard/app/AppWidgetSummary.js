@@ -14,10 +14,10 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   borderRadius: '50%',
   alignItems: 'center',
-  width: theme.spacing(8),
-  height: theme.spacing(8),
+  width: theme.spacing(4),
+  height: theme.spacing(0),
   justifyContent: 'center',
-  marginBottom: theme.spacing(3),
+  marginBottom: theme.spacing(0),
 }));
 
 // ----------------------------------------------------------------------
@@ -34,7 +34,7 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
   return (
     <Card
       sx={{
-        py: 5,
+        // py: 5,
         boxShadow: 0,
         textAlign: 'center',
         color: (theme) => theme.palette[color].darker,
@@ -43,7 +43,7 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
       }}
       {...other}
     >
-      <IconWrapperStyle
+      {/* <IconWrapperStyle
         sx={{
           color: (theme) => theme.palette[color].dark,
           backgroundImage: (theme) =>
@@ -54,11 +54,11 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
         }}
       >
         <Iconify icon={icon} width={24} height={24} />
-      </IconWrapperStyle>
+      </IconWrapperStyle> */}
 
       <Typography variant="h3">{fShortenNumber(total)}</Typography>
 
-      <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+      <Typography variant="subtitle2" sx={{ opacity: 0.72 ,pb:1}}>
         {title}
       </Typography>
     </Card>
