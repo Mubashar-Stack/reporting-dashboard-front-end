@@ -95,7 +95,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://localhost:5000/domains',
+      url: 'http://18.134.209.82/api/domains',
       headers: {},
     };
     axios(config)

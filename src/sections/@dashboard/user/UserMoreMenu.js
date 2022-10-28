@@ -36,7 +36,7 @@ export default function UserMoreMenu({ row }) {
   const handleDelete = () => {
     var config = {
       method: 'delete',
-      url: `http://localhost:5000/user/delete/${row.id}`,
+      url: `http://18.134.209.82/api/user/delete/${row.id}`,
       headers: {},
     };
     axios(config)

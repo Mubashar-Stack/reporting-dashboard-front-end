@@ -138,7 +138,7 @@ export default function UploadReports() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://localhost:5000/reports/all',
+      url: 'http://18.134.209.82/api/reports/all',
       headers: {},
     };
     axios(config)
@@ -217,7 +217,7 @@ export default function UploadReports() {
     data.append('commission', commission);
     const config = {
       method: 'post',
-      url: 'http://localhost:5000/reports/new',
+      url: 'http://18.134.209.82/api/reports/new',
       // headers: { 'content-type': 'multipart/form-data' },
       data: data,
     };

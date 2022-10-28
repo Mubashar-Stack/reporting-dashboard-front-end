@@ -32,7 +32,7 @@ export default function UserMoreMenu({ row }) {
   const handleDelete = () => {
     var config = {
       method: 'delete',
-      url: `http://localhost:5000/final_payable/delete/${row.id}`,
+      url: `http://18.134.209.82/api/final_payable/delete/${row.id}`,
       headers: {},
     };
     axios(config)
@@ -85,7 +85,7 @@ export default function UserMoreMenu({ row }) {
             <Iconify
               icon="eva:download-fill"
               onClick={() => {
-                const link = `http://localhost:5000/${row.file}`;
+                const link = `http://18.134.209.82/api/${row.file}`;
                 window.open(link);
               }}
               width={24}
@@ -95,7 +95,7 @@ export default function UserMoreMenu({ row }) {
           <ListItemText
             primary="Download"
             onClick={() => {
-              const link = `http://localhost:5000/${row.file}`;
+              const link = `http://18.134.209.82/api/${row.file}`;
               window.open(link);
             }}
             primaryTypographyProps={{ variant: 'body2' }}

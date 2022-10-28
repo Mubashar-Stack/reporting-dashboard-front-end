@@ -61,7 +61,7 @@ export default function LoginForm() {
     const data = JSON.stringify(values);
     const config = {
       method: 'post',
-      url: 'http://localhost:5000/auth/login',
+      url: 'http://18.134.209.82/api/auth/login',
       headers: {
         'Content-Type': 'application/json',
       },

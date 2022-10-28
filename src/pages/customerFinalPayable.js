@@ -122,7 +122,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://localhost:5000/user-monthly-payable?domain_name=${domainSelected}&month=${
+      url: `http://18.134.209.82/api/user-monthly-payable?domain_name=${domainSelected}&month=${
         new Date(fromdate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]
       }`,
       headers: {
@@ -143,7 +143,7 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://localhost:5000/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
+      url: `http://18.134.209.82/api/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
       headers: {},
     };
     axios(config)

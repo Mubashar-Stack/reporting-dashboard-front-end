@@ -32,7 +32,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
     if (isEdit || isView) {
       let config = {
         method: 'get',
-        url: `http://localhost:5000/domains/${data?.id}`,
+        url: `http://18.134.209.82/api/domains/${data?.id}`,
         headers: {},
       };
       axios(config)
@@ -59,7 +59,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
         var config = {
           method: 'put',
-          url: `http://localhost:5000/domain/update/${data?.id}`,
+          url: `http://18.134.209.82/api/domain/update/${data?.id}`,
           headers: {},
           data: newData,
         };
@@ -93,7 +93,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
           var config = {
             method: 'post',
-            url: 'http://localhost:5000/domain/add',
+            url: 'http://18.134.209.82/api/domain/add',
             headers: {},
             data: newData,
           };

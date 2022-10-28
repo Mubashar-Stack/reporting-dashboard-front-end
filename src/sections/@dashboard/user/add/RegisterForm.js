@@ -53,13 +53,13 @@ export default function HorizontalLabelPositionBelowStepper(props) {
     if (isEdit || isView) {
       let config = {
         method: 'get',
-        url: `http://localhost:5000/users/${data?.id}`,
+        url: `http://18.134.209.82/api/users/${data?.id}`,
         headers: {},
       };
       axios(config)
         .then(function (response) {
           const User = JSON.parse(JSON.stringify(response.data.data));
-          setURL(`http://localhost:5000/${User?.photo}`);
+          setURL(`http://18.134.209.82/api/${User?.photo}`);
           setAvatar(User?.photo);
           setFirstName(User?.first_name);
           setLastName(User?.last_name);
@@ -102,7 +102,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
       var config = {
         method: 'put',
-        url: `http://localhost:5000/user/update/${data?.id}`,
+        url: `http://18.134.209.82/api/user/update/${data?.id}`,
         headers: {},
         data: newData,
       };
@@ -146,7 +146,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
         var config = {
           method: 'post',
-          url: 'http://localhost:5000/user/add',
+          url: 'http://18.134.209.82/api/user/add',
           headers: {},
           data: newData,
         };
