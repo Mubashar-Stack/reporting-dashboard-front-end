@@ -56,6 +56,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
   const [accountHolderAddress, setAccountHolderAddress] = React.useState('');
   const [SWIFTBICCode, setSWIFTBICCode] = React.useState('');
   const [payPalEmail, setPayPalEmail] = React.useState('');
+  const [UPI, setUPI] = React.useState('');
 
   const [issuccess, setIsSuccess] = React.useState(false);
   const [message, setMessage] = React.useState('');
@@ -90,6 +91,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
           setAccountHolderAddress(User?.bank_account_holder_address);
           setSWIFTBICCode(User?.swift_bic_code);
           setPayPalEmail(User?.paypal_email_address);
+          setUPI(User?.upi);
           setDisabled(isEdit ? false : true);
         })
         .catch(function (error) {
@@ -114,6 +116,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
       newData.append('bank_account_holder_address', accountHolderAddress);
       newData.append('swift_bic_code', SWIFTBICCode);
       newData.append('paypal_email_address', payPalEmail);
+      newData.append('upi', UPI);
       newData.append('isFileChange', isFileChange);
       newData.append('isChangedPassword', isChangedPassword);
 
@@ -349,6 +352,16 @@ export default function HorizontalLabelPositionBelowStepper(props) {
                 disabled={disabled}
                 fullWidth
                 onChange={(e) => setPayPalEmail(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={12}>
+            <TextField
+                id="upi"
+                label="UPI"
+                value={UPI}
+                disabled={disabled}
+                fullWidth
+                onChange={(e) => setUPI(e.target.value)}
               />
             </Grid>
           </Grid>
