@@ -7,7 +7,7 @@ import { fShortenNumber } from '../utils/formatNumber';
 import { format } from 'date-fns';
 // material
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
+import api from '../http-commn';
 import {
   Card,
   CardHeader,
@@ -57,6 +57,7 @@ const TABLE_HEAD = [
   { id: 'Calculated_Ad_Requests', label: 'Ad Requests', alignRight: false },
   { id: 'Calculated_Ad_Impressions', label: 'Ad Impressions', alignRight: false },
   { id: 'Calculated_Revenue', label: 'Revenue', alignRight: false },
+  { id: 'createdAt', label: 'Created At', alignCenter: false },
 
 ];
 
@@ -123,14 +124,14 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/userHomeStats?domain_name=${domainSelected}&start_date=${
+      url: `/userHomeStats?domain_name=${domainSelected}&start_date=${
         new Date(fromdate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]
       }&end_date=${new Date(todate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]}`,
       headers: { 
         'Authorization': `Bearer ${window.localStorage.getItem('token')}`
       },
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data.response)));
         setFilterTableData(JSON.parse(JSON.stringify(response.data.data.response)));
@@ -144,13 +145,13 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
+      url: `/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
-        console.log(JSON.parse(JSON.stringify(response.data.data)));
-        setAllDomainList(JSON.parse(JSON.stringify(response.data.data)));
+        // console.log(JSON.parse(JSON.stringify(response.data.data)));
+        setAllDomainList(JSON.parse(JSON.stringify(response?.data?.data?.domainsOfUser)));
       })
       .catch(function (error) {
         console.log(error);
@@ -413,7 +414,7 @@ export default function User() {
                         <TableCell align="left">{fShortenNumber(Calculated_Ad_Requests)}</TableCell>
                         <TableCell align="left">{fShortenNumber(Calculated_Ad_Impressions)}</TableCell>
                         <TableCell align="left">{fShortenNumber(Calculated_Revenue)}</TableCell>
-                        {/* <TableCell align="left">{new Date(create_at).toString()}</TableCell> */}
+                        <TableCell align="left"> {new Date(create_at).toLocaleString()}</TableCell>
                       </TableRow>
                     );
                   })}

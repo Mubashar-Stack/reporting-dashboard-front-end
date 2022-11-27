@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 
 import Iconify from '../../../components/Iconify';
 
-import axios from 'axios';
+import api from '../../../http-commn';
 
 // ----------------------------------------------------------------------
 
@@ -35,10 +35,10 @@ export default function UserMoreMenu({ row }) {
   const handleDelete = () => {
     var config = {
       method: 'delete',
-      url: `http://18.134.209.82/api/domain/delete/${row.id}`,
+      url: `/domain/delete/${row.id}`,
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         window.location.reload();
       })
@@ -83,7 +83,7 @@ export default function UserMoreMenu({ row }) {
             <Iconify
               icon="eva:download-fill"
               onClick={() => {
-                const link = `http://18.134.209.82/api/${row.ads_code}`;
+                const link = `https://api.pubxmedia.com//${row.ads_code}`;
                 window.open(link);
               }}
               width={24}
@@ -93,7 +93,7 @@ export default function UserMoreMenu({ row }) {
           <ListItemText
             primary="Download"
             onClick={() => {
-              const link = `http://18.134.209.82/api/${row.ads_code}`;
+              const link = `https://api.pubxmedia.com//${row.ads_code}`;
               window.open(link);
             }}
             primaryTypographyProps={{ variant: 'body2' }}

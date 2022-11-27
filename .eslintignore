@@ -1,7 +1,10 @@
 // .eslintignore
+**/*.js
 build/*
 public/*
 src/service-worker.js
 src/serviceWorkerRegistration.js
 src/setupTests.js
 src/reportWebVitals.js
+src/utils/canvasjs.min.js
+src/utils/canvasjs.react.js

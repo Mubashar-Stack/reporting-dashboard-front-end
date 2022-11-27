@@ -5,7 +5,7 @@ import React, { useState ,useEffect} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
+import api from '../http-commn';
 import {
   Card,
   Table,
@@ -95,10 +95,10 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/users_domains',
+      url: '/users_domains',
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setAllDomainList(JSON.parse(JSON.stringify(response.data.data)));
@@ -221,13 +221,13 @@ export default function User() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, domainname,first_name,last_name, photo, created_at } = row;
+                    const { _id, domainname,user, created_at } = row;
                     const isItemSelected = selected.indexOf(domainname) !== -1;
 
                     return (
                       <TableRow
                         hover
-                        key={id}
+                        key={_id}
                         tabIndex={-1}
                         role="checkbox"
                         selected={isItemSelected}
@@ -238,9 +238,9 @@ export default function User() {
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={first_name} src={`http://18.134.209.82/api/${photo}`} />
+                            <Avatar alt={user?.first_name} src={`https://api.pubxmedia.com//${user?.photo}`} />
                             <Typography variant="subtitle2" noWrap>
-                              {`${first_name} ${last_name}`}
+                              {`${user?.first_name} ${user?.last_name}`}
                             </Typography>
                           </Stack>
                         </TableCell>

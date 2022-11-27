@@ -7,7 +7,7 @@ import { fShortenNumber } from '../utils/formatNumber';
 import { format } from 'date-fns';
 // material
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
+import api from '../http-commn';
 import {
   Card,
   CardHeader,
@@ -56,7 +56,7 @@ const TABLE_HEAD = [
   { id: 'gross_revenue', label: 'Gross Revenue', alignRight: false },
   { id: 'deductions', label: 'Deductions', alignRight: false },
   { id: 'net_revenue', label: 'Net Revenue', alignRight: false },
-  { id: 'created_at', label: 'Created At', alignRight: false },
+  // { id: 'created_at', label: 'Created At', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -122,14 +122,14 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/user-monthly-payable?domain_name=${domainSelected}&month=${
+      url: `/user-monthly-payable?domain_name=${domainSelected}&month=${
         new Date(fromdate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]
       }`,
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem('token')}`,
       },
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setFilterTableData(JSON.parse(JSON.stringify(response.data.data)));
@@ -143,10 +143,10 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
+      url: `/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setAllDomainList(JSON.parse(JSON.stringify(response.data.data)));
@@ -216,6 +216,16 @@ export default function User() {
     p: 10,
   };
 
+  const calculateNetRevenue = () => {
+    let totalNetRevenue = 0;
+    filterTableData.map((data) => {
+      let { net_revenue } = data;
+      totalNetRevenue += net_revenue;
+    });
+
+    return totalNetRevenue;
+  };
+
   return (
     <Page title="User">
       <Container>
@@ -267,10 +277,13 @@ export default function User() {
                     />
                   </LocalizationProvider>
                 </Box>
+                <AppWidgetSummary title="Net Revenue" total={calculateNetRevenue()}  sx={{width: 200,mt:3 }} icon={'ant-design:rise-outlined'} />
               </Grid>
             </Grid>
           </Grid>
         </Stack>
+
+      
 
         <Card sx={{ mt: 4 }}>
           <Scrollbar>
@@ -319,7 +332,7 @@ export default function User() {
                         <TableCell align="left">{fShortenNumber(deductions)}</TableCell>
                         <TableCell align="left">{fShortenNumber(net_revenue)}</TableCell>
                         {/* <TableCell align="left">{fShortenNumber(Calculated_Revenue)}</TableCell> */}
-                        <TableCell align="left">{new Date(created_at).toLocaleString()}</TableCell>
+                        {/* <TableCell align="left">{new Date(created_at).toLocaleString()}</TableCell> */}
                       </TableRow>
                     );
                   })}

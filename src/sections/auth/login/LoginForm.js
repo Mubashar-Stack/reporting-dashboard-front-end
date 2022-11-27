@@ -2,9 +2,15 @@
 import * as Yup from 'yup';
 
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import React, { useState ,useEffect} from 'react';
+import api from '../../../http-commn';
+import React, { useState, useEffect } from 'react';
 
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 // form
 import Snackbar from '@mui/material/Snackbar';
@@ -18,12 +24,23 @@ import { LoadingButton } from '@mui/lab';
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
 
-
 // ----------------------------------------------------------------------
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  // width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function LoginForm() {
   /* eslint-disable */
@@ -32,9 +49,10 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
   const [issuccess, setIsSuccess] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
   const handleIsSuccessClose = () => setIsSuccess(false);
   const handleIsSuccessOpen = () => setIsSuccess(true);
-
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -61,13 +79,13 @@ export default function LoginForm() {
     const data = JSON.stringify(values);
     const config = {
       method: 'post',
-      url: 'http://18.134.209.82/api/auth/login',
+      url: '/auth/login',
       headers: {
         'Content-Type': 'application/json',
       },
       data: data,
     };
-    axios(config)
+    api(config)
       .then(async (response) => {
         const result = JSON.parse(JSON.stringify(response.data));
         console.log(result?.data, result?.type);
@@ -85,9 +103,12 @@ export default function LoginForm() {
       .catch(function (error) {
         console.log(error);
         setMessage('Invalid credentials!');
-        handleIsSuccessOpen()
+        handleIsSuccessOpen();
       });
   };
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -112,7 +133,7 @@ export default function LoginForm() {
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <RHFCheckbox name="remember" label="Remember me" />
-        <Link variant="subtitle2" underline="hover">
+        <Link variant="subtitle2" underline="hover"  onClick={handleOpen}>
           Forgot password?
         </Link>
       </Stack>
@@ -120,6 +141,28 @@ export default function LoginForm() {
       <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
         Login
       </LoadingButton>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={isOpen}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={isOpen}>
+          <Box sx={style}>
+            <Typography id="transition-modal-title" variant="h6" component="h2">
+              Contact Support
+            </Typography>
+            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+              Email:- support@pubxmedia.com
+            </Typography>
+          </Box>
+        </Fade>
+      </Modal>
       <Snackbar open={issuccess} autoHideDuration={6000} onClose={handleIsSuccessClose}>
         <Alert onClose={handleIsSuccessClose} severity="error" sx={{ width: '100%' }}>
           {message}

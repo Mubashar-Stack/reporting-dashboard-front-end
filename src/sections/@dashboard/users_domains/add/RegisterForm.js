@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
-import axios from 'axios';
+import api from '../../../../http-commn';
 
 const steps = ['Domain Detail'];
 
@@ -36,10 +36,10 @@ export default function HorizontalLabelPositionBelowStepper(props) {
   React.useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/users',
+      url: '/users',
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setUsersList(JSON.parse(JSON.stringify(response.data.data)));
@@ -49,10 +49,10 @@ export default function HorizontalLabelPositionBelowStepper(props) {
       });
     let configDomain = {
       method: 'get',
-      url: 'http://18.134.209.82/api/domains',
+      url: '/domains',
       headers: {},
     };
-    axios(configDomain)
+    api(configDomain)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setDomainList(JSON.parse(JSON.stringify(response.data.data)));
@@ -63,10 +63,10 @@ export default function HorizontalLabelPositionBelowStepper(props) {
     if (isEdit || isView) {
       let config = {
         method: 'get',
-        url: `http://18.134.209.82/api/users_domains/${data?.id}`,
+        url: `/users_domains/${data?.id}`,
         headers: {},
       };
-      axios(config)
+      api(config)
         .then(function (response) {
           console.log(JSON.parse(JSON.stringify(response.data.data)));
           const Domain = JSON.parse(JSON.stringify(response.data.data));
@@ -90,12 +90,12 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
         var config = {
           method: 'put',
-          url: `http://18.134.209.82/api/user_domain/update/${data?.id}`,
+          url: `/user_domain/update/${data?.id}`,
           headers: {},
           data: newData,
         };
 
-        axios(config)
+        api(config)
           .then(function (response) {
             console.log(JSON.stringify(response.data));
             setActiveStep(activeStep + 1);
@@ -123,12 +123,12 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
         var config = {
           method: 'post',
-          url: 'http://18.134.209.82/api/user_domain/add',
+          url: '/user_domain/add',
           headers: {},
           data: newData,
         };
 
-        axios(config)
+        api(config)
           .then(function (response) {
             console.log(JSON.stringify(response.data));
             setActiveStep(activeStep + 1);
@@ -173,7 +173,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
                   inputValue={domainName}
                   // value={domainName}
                   onChange={(event, newValue) => {
-                    setDomainID(newValue.id);
+                    setDomainID(newValue._id);
                     setDomainName(newValue.domainname);
                   }}
                   onInputChange={(event, newInputValue) => {
@@ -204,7 +204,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
                   // value={userName}
                   autoHighlight
                   onChange={(event, newValue) => {
-                    setUserID(newValue.id);
+                    setUserID(newValue._id);
                     setUserName(newValue.first_name);
                   }}
                   onInputChange={(event, newInputValue) => {
@@ -216,8 +216,8 @@ export default function HorizontalLabelPositionBelowStepper(props) {
                       <img
                         loading="lazy"
                         width="20"
-                        src={`http://18.134.209.82/api/${option?.photo}`}
-                        srcSet={`http://18.134.209.82/api/${option?.photo}.png 2x`}
+                        src={`https://api.pubxmedia.com//${option?.photo}`}
+                        srcSet={`https://api.pubxmedia.com//${option?.photo}.png 2x`}
                         alt=""
                       />
                       {option.first_name} {option.last_name}

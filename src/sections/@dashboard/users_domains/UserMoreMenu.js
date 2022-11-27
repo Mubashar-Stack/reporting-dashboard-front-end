@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 
 import Iconify from '../../../components/Iconify';
 import { RegisterForm } from './add';
-import axios from 'axios';
+import api from '../../../http-commn';
 
 // ----------------------------------------------------------------------
 
@@ -35,10 +35,10 @@ export default function UserMoreMenu({ row }) {
   const handleDelete = () => {
     var config = {
       method: 'delete',
-      url: `http://18.134.209.82/api/user_domain/delete/${row.id}`,
+      url: `/user_domain/delete/${row?.user?._id}/${row?._id}`,
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         window.location.reload();
       })
@@ -79,7 +79,7 @@ export default function UserMoreMenu({ row }) {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >    
 
-        <MenuItem
+        {/* <MenuItem
           component={RouterLink}
           onClick={() => {
             handleOpen();
@@ -104,7 +104,7 @@ export default function UserMoreMenu({ row }) {
             }}
             primaryTypographyProps={{ variant: 'body2' }}
           />
-        </MenuItem>
+        </MenuItem> */}
 
         <MenuItem sx={{ color: 'text.secondary' }}>
           <ListItemIcon>

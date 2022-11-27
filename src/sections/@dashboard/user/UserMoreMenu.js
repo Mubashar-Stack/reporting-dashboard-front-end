@@ -10,7 +10,7 @@ import { styled } from '@mui/material/styles';
 
 import Iconify from '../../../components/Iconify';
 import { RegisterForm } from './add';
-import axios from 'axios';
+import api from '../../../http-commn';
 
 // ----------------------------------------------------------------------
 
@@ -36,10 +36,10 @@ export default function UserMoreMenu({ row }) {
   const handleDelete = () => {
     var config = {
       method: 'delete',
-      url: `http://18.134.209.82/api/user/delete/${row.id}`,
+      url: `/user/delete/${row._id}`,
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         window.location.reload();
       })

@@ -5,9 +5,13 @@ import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { fShortenNumber } from '../utils/formatNumber';
 import { format } from 'date-fns';
+import Chart from 'react-apexcharts';
+import CanvasJSReact from '../utils/canvasjs.react';
+
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 // material
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
+import api from '../http-commn';
 import {
   Card,
   CardHeader,
@@ -122,16 +126,22 @@ export default function DashboardApp() {
   const [filterData, setFilterData] = useState(null);
   const [filterTableData, setFilterTableData] = useState([]);
   const [homeStatsFixed, setHomeStatsFixed] = useState(null);
+  const [monthwiseData, setMonthwiseData] = useState([]);
+  const [chartRevenue, setchartRevenue] = useState([]);
+  const [chartImpressions, setchartImpressions] = useState([]);
+  const [charteCPM, setcharteCPM] = useState([]);
 
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/homeStatsFixed',
+      url: '/homeStatsFixed',
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         setHomeStatsFixed(JSON.parse(JSON.stringify(response.data.data)));
+        setMonthwiseData(JSON.parse(JSON.stringify(response.data.monthwiseData)));
+        chartData(JSON.parse(JSON.stringify(response.data.monthwiseData)));
       })
       .catch(function (error) {
         console.log(error);
@@ -141,12 +151,12 @@ export default function DashboardApp() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/homeStats?domain_name=${domainSelected}&start_date=${
+      url: `/homeStats?domain_name=${domainSelected}&start_date=${
         new Date(fromdate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]
       }&end_date=${new Date(todate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]}`,
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data.response)));
         setFilterTableData(JSON.parse(JSON.stringify(response.data.data.response)));
@@ -160,10 +170,10 @@ export default function DashboardApp() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/domains',
+      url: '/domains',
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setAllDomainList(JSON.parse(JSON.stringify(response.data.data)));
@@ -172,6 +182,48 @@ export default function DashboardApp() {
         console.log(error);
       });
   }, []);
+
+  const chartData = (dataSeries) => {
+    let chartRevenue = [];
+    let chartImpressions = [];
+    let charteCPM = [];
+    let monthList = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+    monthList.map((month, index) => {
+      let { Calculated_Ad_Impressions, calculatedRevenue } = dataSeries[month];
+      chartRevenue.push({
+        x: new Date(new Date().getFullYear(), index, 1),
+        y: calculatedRevenue?.toFixed(2),
+      });
+      chartImpressions.push({
+        x: new Date(new Date().getFullYear(), index, 1),
+        y: Calculated_Ad_Impressions?.toFixed(2),
+      });
+      if (calculatedRevenue == 0 || Calculated_Ad_Impressions == 0) {
+        charteCPM.push({
+          x: new Date(new Date().getFullYear(), index, 1),
+          y: 0,
+        });
+      } else {
+        charteCPM.push({
+          x: new Date(new Date().getFullYear(), index, 1),
+          y: ((calculatedRevenue / Calculated_Ad_Impressions) * 1000)?.toFixed(2),
+        });
+      }
+    });
+
+    console.log('============Chart Data final========================');
+    console.log({
+      chartRevenue: chartRevenue,
+      chartImpressions: chartImpressions,
+      charteCPM: charteCPM,
+    });
+    console.log('====================================');
+
+    setchartRevenue(chartRevenue);
+    setchartImpressions(chartImpressions);
+    setcharteCPM(charteCPM);
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -233,6 +285,133 @@ export default function DashboardApp() {
     p: 10,
   };
 
+  const toggleDataSeries = (e) => {
+    if (typeof e.dataSeries.visible === 'undefined' || e.dataSeries.visible) {
+      e.dataSeries.visible = false;
+    } else {
+      e.dataSeries.visible = true;
+    }
+    this.chart.render();
+  };
+
+  const series = [
+    {
+      name: 'Revenue',
+      type: 'line',
+      data: chartRevenue,
+    },
+    {
+      name: 'Ads Impressions',
+      type: 'line',
+      data: chartImpressions,
+    },
+    {
+      name: 'eCPM',
+      type: 'line',
+      data: charteCPM,
+    },
+  ];
+
+  const options = {
+    chart: {
+      height: 400,
+      type: 'line',
+      stacked: false,
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      width: [1, 1, 4],
+    },
+    title: {
+      text: 'Current Year Data',
+      align: 'left',
+      offsetX: 110,
+    },
+    xaxis: {
+      type: 'datetime',
+
+      tickAmount: 'dataPoints',
+      tickPlacement: 'between',
+      categories: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
+    },
+    yaxis: [
+      {
+        axisTicks: {
+          show: true,
+        },
+        axisBorder: {
+          show: true,
+          color: '#008FFB',
+        },
+        labels: {
+          style: {
+            colors: '#008FFB',
+          },
+        },
+        title: {
+          text: 'Revenue',
+          style: {
+            color: '#008FFB',
+          },
+        },
+        tooltip: {
+          enabled: true,
+        },
+      },
+      {
+        seriesName: 'Revenue',
+        opposite: true,
+        axisTicks: {
+          show: true,
+        },
+        axisBorder: {
+          show: true,
+          color: '#00E396',
+        },
+        labels: {
+          style: {
+            colors: '#00E396',
+          },
+        },
+        title: {
+          text: 'Ads Impressions',
+          style: {
+            color: '#00E396',
+          },
+        },
+      },
+      {
+        seriesName: 'Ads Impressions',
+        opposite: true,
+        axisTicks: {
+          show: true,
+        },
+        axisBorder: {
+          show: true,
+          color: '#FEB019',
+        },
+        labels: {
+          style: {
+            colors: '#FEB019',
+          },
+        },
+        title: {
+          text: 'eCPM',
+          style: {
+            color: '#FEB019',
+          },
+        },
+      },
+    ],
+
+    legend: {
+      horizontalAlign: 'left',
+      offsetX: 40,
+    },
+  };
+
   return (
     <Page title="User">
       <Container>
@@ -240,10 +419,51 @@ export default function DashboardApp() {
           <Typography variant="h4" sx={{ mb: 5 }}>
             Hi, Welcome back
           </Typography>
-          <Typography variant="h6" gutterBottom>
-            Today Stats
-          </Typography>
+
           <Grid container spacing={2} justifyContent="space-evenly">
+            <Grid item xs={12} sm={6} md={3} lg={3}>
+              <AppWidgetSummary
+                title="Yesterday Revenue"
+                total={homeStatsFixed?.yesterdayStats?.revenue}
+                icon={'ant-design:rise-outlined'}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={3} lg={3}>
+              <AppWidgetSummary
+                title="Last Week Revenue"
+                total={homeStatsFixed?.lastWeekStats?.revenue}
+                color="primary"
+                icon={'ant-design:line-chart-outlined'}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={3} lg={3}>
+              <AppWidgetSummary
+                title="Current Month Revenue"
+                total={homeStatsFixed?.currentMonthStats?.revenue}
+                color="primary"
+                icon={'ant-design:dollar-outlined'}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={3} lg={3}>
+              <AppWidgetSummary
+                title="Last Month Revenue"
+                total={homeStatsFixed?.lastMonthStats?.revenue}
+                color="primary"
+                icon={'ant-design:rise-outlined'}
+              />
+            </Grid>
+          </Grid>
+
+          <Card sx={{ mt: 4, mb: 4, width: '100%' }}>
+            <Chart options={options} series={series} type="line" height={400} />
+          </Card>
+          {/* <Typography variant="h6" gutterBottom>
+            Today Stats
+          </Typography> */}
+          {/* <Grid container spacing={2} justifyContent="space-evenly">
             <Grid item xs={12} sm={6} md={3} lg={3}>
               <AppWidgetSummary
                 title="Total Requests"
@@ -306,7 +526,7 @@ export default function DashboardApp() {
                 icon={'ant-design:dollar-outlined'}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
           <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
             Yesterday Stats
           </Typography>
@@ -375,7 +595,7 @@ export default function DashboardApp() {
               />
             </Grid>
           </Grid>
-          <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
+          {/* <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
             Current Week Stats
           </Typography>
           <Grid container spacing={2} justifyContent="space-evenly">
@@ -442,7 +662,7 @@ export default function DashboardApp() {
                 icon={'ant-design:dollar-outlined'}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
           <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
             Last Week Stats
           </Typography>

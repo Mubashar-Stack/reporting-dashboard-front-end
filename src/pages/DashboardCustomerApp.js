@@ -5,9 +5,13 @@ import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { fShortenNumber } from '../utils/formatNumber';
 import { format } from 'date-fns';
-// material
+//material
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
+import CanvasJSReact from '../utils/canvasjs.react';
+
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
+import api from '../http-commn';
 import {
   Card,
   CardHeader,
@@ -32,6 +36,7 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
+import Chart from 'react-apexcharts';
 
 import dayjs from 'dayjs';
 
@@ -48,6 +53,7 @@ import Iconify from '../components/Iconify';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/domains';
 import { AppWidgetSummary } from '../sections/@dashboard/app';
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -90,6 +96,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function DashboardApp() {
+  /* eslint-disable */
   const now = new Date();
   const [show, setShow] = useState(false);
   const [showdomain, setShowDomain] = useState(false);
@@ -118,18 +125,22 @@ export default function DashboardApp() {
   const [allDomainList, setAllDomainList] = useState([]);
   const [filterData, setFilterData] = useState(null);
   const [filterTableData, setFilterTableData] = useState([]);
+  const [monthwiseData, setMonthwiseData] = useState([]);
+  const [chartRevenue, setchartRevenue] = useState([]);
+  const [chartImpressions, setchartImpressions] = useState([]);
+  const [charteCPM, setcharteCPM] = useState([]);
 
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/userHomeStats?domain_name=${domainSelected}&start_date=${
+      url: `/userHomeStats?domain_name=${domainSelected}&start_date=${
         new Date(fromdate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]
       }&end_date=${new Date(todate).toISOString().slice(0, 19).replace('T', ' ').split(' ')[0]}`,
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem('token')}`,
       },
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data.response)));
         setFilterTableData(JSON.parse(JSON.stringify(response.data.data.response)));
@@ -143,10 +154,10 @@ export default function DashboardApp() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: `http://18.134.209.82/api/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
+      url: `/users_domains_by_user_id/${window.localStorage.getItem('id')}`,
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setAllDomainList(JSON.parse(JSON.stringify(response.data.data)));
@@ -159,19 +170,63 @@ export default function DashboardApp() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/userHomeStatsFixed',
+      url: '/userHomeStatsFixed',
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem('token')}`,
       },
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         setHomeStatsFixed(JSON.parse(JSON.stringify(response.data.data)));
+        setMonthwiseData(JSON.parse(JSON.stringify(response.data.monthwiseData)));
+        chartData(JSON.parse(JSON.stringify(response.data.monthwiseData)));
       })
       .catch(function (error) {
         console.log(error);
       });
   }, []);
+
+  const chartData = (dataSeries) => {
+    let chartRevenue = [];
+    let chartImpressions = [];
+    let charteCPM = [];
+    let monthList = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+    monthList.map((month, index) => {
+      let { Calculated_Ad_Impressions, calculatedRevenue } = dataSeries[month];
+      chartRevenue.push({
+        x: new Date(new Date().getFullYear(), index, 1),
+        y: calculatedRevenue?.toFixed(2),
+      });
+      chartImpressions.push({
+        x: new Date(new Date().getFullYear(), index, 1),
+        y: Calculated_Ad_Impressions?.toFixed(2),
+      });
+      if (calculatedRevenue == 0 || Calculated_Ad_Impressions == 0) {
+        charteCPM.push({
+          x: new Date(new Date().getFullYear(), index, 1),
+          y: 0,
+        });
+      } else {
+        charteCPM.push({
+          x: new Date(new Date().getFullYear(), index, 1),
+          y: ((calculatedRevenue / Calculated_Ad_Impressions) * 1000)?.toFixed(2),
+        });
+      }
+    });
+
+    console.log('============Chart Data final========================');
+    console.log({
+      chartRevenue: chartRevenue,
+      chartImpressions: chartImpressions,
+      charteCPM: charteCPM,
+    });
+    console.log('====================================');
+
+    setchartRevenue(chartRevenue);
+    setchartImpressions(chartImpressions);
+    setcharteCPM(charteCPM);
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -201,6 +256,15 @@ export default function DashboardApp() {
       newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
     }
     setSelected(newSelected);
+  };
+
+  const toggleDataSeries = (e) => {
+    if (typeof e.dataSeries.visible === 'undefined' || e.dataSeries.visible) {
+      e.dataSeries.visible = false;
+    } else {
+      e.dataSeries.visible = true;
+    }
+    this.chart.render();
   };
 
   const handleChangePage = (event, newPage) => {
@@ -233,6 +297,124 @@ export default function DashboardApp() {
     p: 10,
   };
 
+  const series = [
+    {
+      name: 'Revenue',
+      type: 'line',
+      data: chartRevenue,
+    },
+    {
+      name: 'Ads Impressions',
+      type: 'line',
+      data: chartImpressions,
+    },
+    {
+      name: 'eCPM',
+      type: 'line',
+      data: charteCPM,
+    },
+  ];
+
+  const options = {
+    chart: {
+      height: 400,
+      type: 'line',
+      stacked: false,
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      width: [1, 1, 4],
+    },
+    title: {
+      text: 'Current Year Data',
+      align: 'left',
+      offsetX: 110,
+    },
+    xaxis: {
+      type: 'datetime',
+
+      tickAmount: 'dataPoints',
+      tickPlacement: 'between',
+      categories: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
+    },
+    yaxis: [
+      {
+        axisTicks: {
+          show: true,
+        },
+        axisBorder: {
+          show: true,
+          color: '#008FFB',
+        },
+        labels: {
+          style: {
+            colors: '#008FFB',
+          },
+        },
+        title: {
+          text: 'Revenue',
+          style: {
+            color: '#008FFB',
+          },
+        },
+        tooltip: {
+          enabled: true,
+        },
+      },
+      {
+        seriesName: 'Revenue',
+        opposite: true,
+        axisTicks: {
+          show: true,
+        },
+        axisBorder: {
+          show: true,
+          color: '#00E396',
+        },
+        labels: {
+          style: {
+            colors: '#00E396',
+          },
+        },
+        title: {
+          text: 'Ads Impressions',
+          style: {
+            color: '#00E396',
+          },
+        },
+      },
+      {
+        seriesName: 'Ads Impressions',
+        opposite: true,
+        axisTicks: {
+          show: true,
+        },
+        axisBorder: {
+          show: true,
+          color: '#FEB019',
+        },
+        labels: {
+          style: {
+            colors: '#FEB019',
+          },
+        },
+        title: {
+          text: 'eCPM',
+          style: {
+            color: '#FEB019',
+          },
+        },
+      },
+    ],
+
+    legend: {
+      horizontalAlign: 'left',
+      offsetX: 40,
+    },
+  };
+
   return (
     <Page title="User">
       <Container>
@@ -240,6 +422,52 @@ export default function DashboardApp() {
           <Typography variant="h4" sx={{ mb: 5 }}>
             Hi, Welcome back
           </Typography>
+
+
+          <Grid container spacing={2} justifyContent="space-evenly">
+            <Grid item xs={12} sm={6} md={3} lg={3}>
+              <AppWidgetSummary
+                title="Yesterday Revenue"
+                total={homeStatsFixed?.yesterdayStats?.calculatedRevenue}
+                icon={'ant-design:rise-outlined'}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={3} lg={3}>
+              <AppWidgetSummary
+                title="Last Week Revenue"
+                total={homeStatsFixed?.lastWeekStats?.calculatedRevenue}
+                color="primary"
+                icon={'ant-design:line-chart-outlined'}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={3} lg={3}>
+              <AppWidgetSummary
+                title="Current Month Revenue"
+                total={homeStatsFixed?.currentMonthStats?.calculatedRevenue}
+                color="primary"
+                icon={'ant-design:dollar-outlined'}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={3} lg={3}>
+              <AppWidgetSummary
+                title="Last Month Revenue"
+                total={homeStatsFixed?.lastMonthStats?.calculatedRevenue}
+                color="primary"
+                icon={'ant-design:rise-outlined'}
+              />
+            </Grid>
+          </Grid>
+
+
+
+          <Card sx={{ mt: 4 }}>
+           
+          <Chart options={options} series={series} type="line" height={400} />
+           
+          </Card>
           <Grid container spacing={2} justifyContent="flex-start">
             {/*<Grid item xs={12} sm={6} md={3} lg={2.3}>
             <AppWidgetSummary
@@ -308,13 +536,13 @@ export default function DashboardApp() {
               </Grid>
             </Grid>
             <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
-              This Week Stats
+              Last Week Stats
             </Typography>
             <Grid container spacing={2} justifyContent="space-evenly">
               <Grid item xs={12} sm={6} md={3} lg={2.3}>
                 <AppWidgetSummary
                   title="This Week Requests"
-                  total={homeStatsFixed?.thisWeekStats?.Calculated_Ad_Requests}
+                  total={homeStatsFixed?.lastWeekStats?.Calculated_Ad_Requests}
                   color="success"
                   icon={'ant-design:rise-outlined'}
                 />
@@ -322,7 +550,7 @@ export default function DashboardApp() {
               <Grid item xs={12} sm={6} md={3} lg={2.3}>
                 <AppWidgetSummary
                   title="This Week Impressions"
-                  total={homeStatsFixed?.thisWeekStats?.Calculated_Ad_Impressions}
+                  total={homeStatsFixed?.lastWeekStats?.Calculated_Ad_Impressions}
                   color="success"
                   icon={'ant-design:line-chart-outlined'}
                 />
@@ -330,7 +558,7 @@ export default function DashboardApp() {
               <Grid item xs={12} sm={6} md={3} lg={2.3}>
                 <AppWidgetSummary
                   title="This Week Revenue"
-                  total={homeStatsFixed?.thisWeekStats?.calculatedRevenue}
+                  total={homeStatsFixed?.lastWeekStats?.calculatedRevenue}
                   color="success"
                   icon={'ant-design:dollar-outlined'}
                 />
@@ -339,8 +567,8 @@ export default function DashboardApp() {
                 <AppWidgetSummary
                   title="Yesterday eCPM"
                   total={
-                    (homeStatsFixed?.thisWeekStats?.calculatedRevenue /
-                      homeStatsFixed?.thisWeekStats?.Calculated_Ad_Impressions) *
+                    (homeStatsFixed?.lastWeekStats?.calculatedRevenue /
+                      homeStatsFixed?.lastWeekStats?.Calculated_Ad_Impressions) *
                     1000
                   }
                   color="success"
@@ -418,7 +646,7 @@ export default function DashboardApp() {
                 />
               </Grid>
             </Grid>
-            <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
+            {/* <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
               Last Month Stats
             </Typography>
             <Grid container spacing={2} justifyContent="center">
@@ -430,7 +658,7 @@ export default function DashboardApp() {
                   icon={'ant-design:dollar-outlined'}
                 />
               </Grid>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Container>
         {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -576,7 +804,7 @@ export default function DashboardApp() {
         </Grid> */}
 
         <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
-         This Week Stats
+          This Week Stats
         </Typography>
 
         <Card sx={{ mt: 4 }}>

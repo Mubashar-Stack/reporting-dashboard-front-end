@@ -3,7 +3,7 @@ import { filter } from 'lodash';
 
 import React, { useState, useEffect } from 'react';
 
-import axios from 'axios';
+import api from '../http-commn';
 
 // components
 import Page from '../components/Page';
@@ -70,10 +70,10 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/users',
+      url: '/users',
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setAllUsersList(JSON.parse(JSON.stringify(response.data.data)));

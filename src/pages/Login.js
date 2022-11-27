@@ -76,9 +76,7 @@ export default function Login() {
   return (
     <Page title="Login">
       <RootStyle>
-        <HeaderStyle>
-          <Logo />
-        </HeaderStyle>
+        
 
         {mdUp && (
           <SectionStyle>

@@ -5,7 +5,7 @@ import React, { useState ,useEffect} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
+import api from '../http-commn';
 import {
   Card,
   Table,
@@ -96,10 +96,10 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/users',
+      url: '/users',
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setAllUsersList(JSON.parse(JSON.stringify(response.data.data)));
@@ -239,7 +239,7 @@ export default function User() {
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={`http://18.134.209.82/api/${photo}`} />
+                            <Avatar alt={name} src={`https://api.pubxmedia.com//${photo}`} />
                             <Typography variant="subtitle2" noWrap>
                               {`${first_name} ${last_name}`}
                             </Typography>

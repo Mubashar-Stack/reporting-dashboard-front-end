@@ -14,7 +14,7 @@ import { Stack, IconButton, InputAdornment } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import axios from 'axios';
+import api from '../../../../http-commn';
 
 const steps = ['Domain Detail'];
 
@@ -32,10 +32,10 @@ export default function HorizontalLabelPositionBelowStepper(props) {
     if (isEdit || isView) {
       let config = {
         method: 'get',
-        url: `http://18.134.209.82/api/domains/${data?.id}`,
+        url: `/domains/${data?._id}`,
         headers: {},
       };
-      axios(config)
+      api(config)
         .then(function (response) {
           console.log(JSON.parse(JSON.stringify(response.data.data)));
           const Domain = JSON.parse(JSON.stringify(response.data.data));
@@ -59,12 +59,12 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
         var config = {
           method: 'put',
-          url: `http://18.134.209.82/api/domain/update/${data?.id}`,
+          url: `/domain/update/${data?._id}`,
           headers: {},
           data: newData,
         };
 
-        axios(config)
+        api(config)
           .then(function (response) {
             console.log(JSON.stringify(response.data));
             setActiveStep(activeStep + 1);
@@ -93,12 +93,12 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
           var config = {
             method: 'post',
-            url: 'http://18.134.209.82/api/domain/add',
+            url: '/domain/add',
             headers: {},
             data: newData,
           };
 
-          axios(config)
+          api(config)
             .then(function (response) {
               console.log(JSON.stringify(response.data));
               setActiveStep(activeStep + 1);

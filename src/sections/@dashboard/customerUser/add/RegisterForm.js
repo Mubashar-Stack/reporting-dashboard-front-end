@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Snackbar from '@mui/material/Snackbar';
-import axios from 'axios';
+import api from '../../../../http-commn';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -71,13 +71,13 @@ export default function HorizontalLabelPositionBelowStepper(props) {
     if (isEdit || isView) {
       let config = {
         method: 'get',
-        url: `http://18.134.209.82/api/users/${data?.id}`,
+        url: `/users/${data?.id}`,
         headers: {},
       };
-      axios(config)
+      api(config)
         .then(function (response) {
           const User = JSON.parse(JSON.stringify(response.data.data));
-          setURL(`http://18.134.209.82/api/${User?.photo}`);
+          setURL(`https://api.pubxmedia.com//${User?.photo}`);
           setAvatar(User?.photo);
           setFirstName(User?.first_name);
           setLastName(User?.last_name);
@@ -122,12 +122,12 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
       var config = {
         method: 'put',
-        url: `http://18.134.209.82/api/user/update/${data?.id}`,
+        url: `/user/update/${data?.id}`,
         headers: {},
         data: newData,
       };
 
-      axios(config)
+      api(config)
         .then(function (response) {
           console.log(JSON.stringify(response.data));
           setMessage(response?.data?.message);
@@ -236,7 +236,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
                 required
                 name="password"
                 label="Password"
-                disabled={customDisabled}
+                // disabled={customDisabled}
                 value={isEdit ? (isChangedPassword ? password : '') : password}
                 onChange={(e) => {
                   setPassword(e.target.value);

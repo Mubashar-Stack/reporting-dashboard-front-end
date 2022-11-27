@@ -50,7 +50,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={`http://18.134.209.82/api/${window.localStorage.getItem('photo')}`} alt="photoURL" />
+        <Avatar src={`https://api.pubxmedia.com//${window.localStorage.getItem('photo')}`} alt="photoURL" />
       </IconButton>
 
       <MenuPopover

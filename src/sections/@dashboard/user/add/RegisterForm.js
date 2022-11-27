@@ -14,7 +14,7 @@ import { Stack, IconButton, InputAdornment } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import axios from 'axios';
+import api from '../../../../http-commn';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -33,8 +33,8 @@ export default function HorizontalLabelPositionBelowStepper(props) {
   const [isChangedPassword, setIsChangedPassword] = React.useState(false);
 
   const [files, setFiles] = React.useState([]);
-  const [url, setURL] = React.useState('https://www.w3schools.com/howto/img_avatar.png');
-  const [avatar, setAvatar] = React.useState('https://www.w3schools.com/howto/img_avatar.png');
+  const [url, setURL] = React.useState('./1668447604_user-profile.webp');
+  const [avatar, setAvatar] = React.useState('./1668447604_user-profile.webp');
 
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
@@ -55,13 +55,13 @@ export default function HorizontalLabelPositionBelowStepper(props) {
     if (isEdit || isView) {
       let config = {
         method: 'get',
-        url: `http://18.134.209.82/api/users/${data?.id}`,
+        url: `/users/${data?._id}`,
         headers: {},
       };
-      axios(config)
+      api(config)
         .then(function (response) {
           const User = JSON.parse(JSON.stringify(response.data.data));
-          setURL(`http://18.134.209.82/api/${User?.photo}`);
+          setURL(`https://api.pubxmedia.com//${User?.photo}`);
           setAvatar(User?.photo);
           setFirstName(User?.first_name);
           setLastName(User?.last_name);
@@ -106,12 +106,12 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
       var config = {
         method: 'put',
-        url: `http://18.134.209.82/api/user/update/${data?.id}`,
+        url: `/user/update/${data?._id}`,
         headers: {},
         data: newData,
       };
 
-      axios(config)
+      api(config)
         .then(function (response) {
           console.log(JSON.stringify(response.data));
           alert('User Edit Successfully!');
@@ -132,7 +132,7 @@ export default function HorizontalLabelPositionBelowStepper(props) {
           }
         });
     } else {
-      if (files.length > 0) {
+      // if (files.length > 0) {
         var newData = new FormData();
         newData.append('firstName', firstName);
         newData.append('lastName', lastName);
@@ -151,12 +151,12 @@ export default function HorizontalLabelPositionBelowStepper(props) {
 
         var config = {
           method: 'post',
-          url: 'http://18.134.209.82/api/user/add',
+          url: '/user/add',
           headers: {},
           data: newData,
         };
 
-        axios(config)
+        api(config)
           .then(function (response) {
             console.log(JSON.stringify(response.data));
             alert('User Added Successfully!');
@@ -176,9 +176,9 @@ export default function HorizontalLabelPositionBelowStepper(props) {
               console.log('Error', error.message);
             }
           });
-      } else {
-        alert('Please select image!');
-      }
+      // } else {
+      //   alert('Please select image!');
+      // }
     }
   };
 

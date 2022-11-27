@@ -37,7 +37,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 // components
-import axios from 'axios';
+import api from '../http-commn';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import Page from '../components/Page';
@@ -134,10 +134,10 @@ export default function UploadReports() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/final_payable/all',
+      url: '/final_payable/all',
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setAllFilesList(JSON.parse(JSON.stringify(response.data.data)));
@@ -207,12 +207,12 @@ export default function UploadReports() {
     data.append('final_payable', files[0]);
     const config = {
       method: 'post',
-      url: 'http://18.134.209.82/api/final-payable/new',
+      url: '/final-payable/new',
       // headers: { 'content-type': 'multipart/form-data' },
       data: data,
     };
 
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         setMessage(response?.data?.message);
@@ -337,20 +337,20 @@ export default function UploadReports() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-                    const { id, commission, file, create_at } = row;
-                    const isItemSelected = selected.indexOf(id) !== -1;
+                    const { _id, commission, file, created_at } = row;
+                    const isItemSelected = selected.indexOf(_id) !== -1;
 
                     return (
                       <TableRow
                         hover
-                        key={id}
+                        key={_id}
                         tabIndex={-1}
                         role="checkbox"
                         selected={isItemSelected}
                         aria-checked={isItemSelected}
                       >
                         <TableCell colSpan={2} align="left">
-                          {id}
+                        {_id.slice(-4)}
                         </TableCell>
                         <TableCell colSpan={2} align="left">
                           {file.split('_')[1]}
@@ -361,7 +361,7 @@ export default function UploadReports() {
                           </Label>
                         </TableCell> */}
                         <TableCell colSpan={2} align="left">
-                          {new Date(create_at).toLocaleString()}
+                          {new Date(created_at).toLocaleString()}
                         </TableCell>
 
                         <TableCell align="right">

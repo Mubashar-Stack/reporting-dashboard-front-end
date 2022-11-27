@@ -5,7 +5,7 @@ import React, { useState ,useEffect} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
+
 import {
   Card,
   Table,
@@ -33,7 +33,7 @@ import Iconify from '../components/Iconify';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/domains';
 import { RegisterForm } from '../sections/@dashboard/domains/add';
-
+import api from '../http-commn';
 
 // ----------------------------------------------------------------------
 
@@ -95,10 +95,10 @@ export default function User() {
   useEffect(() => {
     let config = {
       method: 'get',
-      url: 'http://18.134.209.82/api/domains',
+      url: '/domains',
       headers: {},
     };
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.parse(JSON.stringify(response.data.data)));
         setAllDomainList(JSON.parse(JSON.stringify(response.data.data)));
